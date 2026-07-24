@@ -37,6 +37,14 @@ const pages = [
       "6つのダッシュボード案と、それぞれが参照するmart・主要指標を確認できます。",
     contents: "KPI / Marketing / Content / RFM / Cohort / Funnel",
   },
+  {
+    href: "/ai-analyst",
+    index: "05",
+    title: "AI Analyst",
+    description:
+      "公開martへ自然言語で問い合わせ、生成SQL、実行結果、日本語の要約を確認できます。",
+    contents: "Anthropic tool use / DuckDB-WASM / 7 public marts",
+  },
 ] as const;
 
 export default function Home() {

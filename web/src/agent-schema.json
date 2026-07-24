@@ -1,0 +1,380 @@
+{
+  "mart_content_assists": [
+    {
+      "name": "purchase_date",
+      "type": "DATE"
+    },
+    {
+      "name": "content_id",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "attribution_model",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "lookback_days",
+      "type": "INTEGER"
+    },
+    {
+      "name": "assisted_orders",
+      "type": "BIGINT"
+    },
+    {
+      "name": "assisted_purchasers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "attributed_order_credit",
+      "type": "DECIMAL(18,6)"
+    },
+    {
+      "name": "attributed_revenue",
+      "type": "DECIMAL(18,2)"
+    }
+  ],
+  "mart_content_performance": [
+    {
+      "name": "metric_date",
+      "type": "DATE"
+    },
+    {
+      "name": "content_id",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "content_type",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "content_group",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "content_view_sessions",
+      "type": "BIGINT"
+    },
+    {
+      "name": "content_view_users",
+      "type": "BIGINT"
+    },
+    {
+      "name": "engaged_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "engagement_time_msec",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "product_click_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "add_to_cart_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "direct_purchase_orders",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "direct_purchase_revenue",
+      "type": "DECIMAL(18,2)"
+    }
+  ],
+  "mart_customer_cohort": [
+    {
+      "name": "cohort_month",
+      "type": "DATE"
+    },
+    {
+      "name": "months_since_first",
+      "type": "BIGINT"
+    },
+    {
+      "name": "acquisition_source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "first_order_category_l1",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "cohort_customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "observable_customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "retained_customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "period_orders",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "period_revenue",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "cumulative_orders",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cumulative_revenue",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "customer_retention_rate",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cumulative_repeat_rate",
+      "type": "DOUBLE"
+    }
+  ],
+  "mart_funnel_daily": [
+    {
+      "name": "metric_date",
+      "type": "DATE"
+    },
+    {
+      "name": "source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "medium",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "device_category",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "customer_type",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "product_category_l1",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "funnel_step",
+      "type": "INTEGER"
+    },
+    {
+      "name": "funnel_event_name",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "reached_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "previous_step_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "step_conversion_rate",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "entry_conversion_rate",
+      "type": "DOUBLE"
+    }
+  ],
+  "mart_kpi_daily": [
+    {
+      "name": "metric_date",
+      "type": "DATE"
+    },
+    {
+      "name": "source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "medium",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "device_category",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "customer_type",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "sessions",
+      "type": "BIGINT"
+    },
+    {
+      "name": "engaged_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "purchasing_sessions",
+      "type": "BIGINT"
+    },
+    {
+      "name": "orders",
+      "type": "BIGINT"
+    },
+    {
+      "name": "purchasers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "new_customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "gross_sales",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "discount_amount",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "recognized_revenue",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "cost_of_goods",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "gross_profit",
+      "type": "DECIMAL(18,2)"
+    }
+  ],
+  "mart_marketing_daily": [
+    {
+      "name": "metric_date",
+      "type": "DATE"
+    },
+    {
+      "name": "source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "medium",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "campaign_id",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "device_category",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "sessions",
+      "type": "BIGINT"
+    },
+    {
+      "name": "engaged_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "view_item_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "add_to_cart_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "begin_checkout_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "purchasing_sessions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "orders",
+      "type": "BIGINT"
+    },
+    {
+      "name": "new_customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "attributed_revenue_last_touch",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "attributed_revenue_linear",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "impressions",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "clicks",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "cost",
+      "type": "DECIMAL(18,2)"
+    }
+  ],
+  "mart_rfm_segment_daily": [
+    {
+      "name": "snapshot_date",
+      "type": "DATE"
+    },
+    {
+      "name": "rfm_segment",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "acquisition_source",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "membership_rank",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "customers",
+      "type": "BIGINT"
+    },
+    {
+      "name": "total_orders",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "total_revenue",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "total_gross_profit",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "avg_recency_days",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "avg_frequency_orders",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "avg_monetary_revenue",
+      "type": "DECIMAL(18,2)"
+    },
+    {
+      "name": "avg_order_value",
+      "type": "DECIMAL(18,2)"
+    }
+  ]
+}

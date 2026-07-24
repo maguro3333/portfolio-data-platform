@@ -20,6 +20,7 @@ export const navItems = [
   { href: "/architecture", label: "Architecture" },
   { href: "/data-pipeline", label: "Data & Pipeline" },
   { href: "/dashboards", label: "Dashboards" },
+  { href: "/ai-analyst", label: "AI Analyst" },
 ] as const;
 
 export const coreTables = [

@@ -29,6 +29,9 @@ export function SiteFooter() {
             <Link href="/dashboards" className="text-sm hover:text-dark-accent">
               Dashboards
             </Link>
+            <Link href="/ai-analyst" className="text-sm hover:text-dark-accent">
+              AI Analyst
+            </Link>
           </div>
           <p className="mt-7 font-mono text-[10px] uppercase tracking-[0.12em] text-dark-muted">
             Synthetic data · Built with Next.js

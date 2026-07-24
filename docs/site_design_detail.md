@@ -38,6 +38,7 @@
 3. Architecture: 実装意図、構成、workflow
 4. Data & Pipeline: schema、変換、mart、品質
 5. Dashboards: martの利用先
+6. AI Analyst: martへの自然言語queryと生成SQL
 
 Contactは当面非公開扱いとし、グローバルナビ、sitemapから除外する。
 
@@ -143,7 +144,7 @@ GCPはsage、AWSはamber、共通dbt層はterracottaで表す。色だけに依�
 ### 4.1 Header
 
 - 左: `KO`モノグラム、氏名、職種
-- 右: Index / About / Architecture / Data & Pipeline / Dashboards
+- 右: Index / About / Architecture / Data & Pipeline / Dashboards / AI Analyst
 - Contactは表示しない
 - GitHubはURL確定までplaceholderと明示
 - mobileはdetails/summaryによるmenu
@@ -296,9 +297,9 @@ Homeにはスローガン、featured case study、CTA stripを置かない。
 5. technology usage
    - role、selection reason、implementation
 6. portability table
-7. AI analyst roadmap
+7. AI Analystへの導線と実装済みguardrail
 
-AI analystは未実装であること、想定guardrailを記載する。
+AI Analystは公開7 martだけを参照し、Claude APIはステートレスなサーバープロキシ、ParquetとDuckDB-WASMはブラウザ内実行であることを記載する。SELECT/WITH限定、row limit、rate limitも明記する。
 
 ### 5.4 Data & Pipeline `/data-pipeline`
 
@@ -366,6 +367,15 @@ AI analystは未実装であること、想定guardrailを記載する。
 - robots `Disallow`
 - 環境変数を優先し、fallbackは分割文字列から生成
 
+### 5.7 AI Analyst `/ai-analyst`
+
+- 公開7 martへ自然言語で問い合わせる。
+- Anthropic tool useで`run_sql`を呼び出す。
+- Next.js Node runtimeはClaude呼び出しとSQL検証だけを行い、DuckDB-WASMと公開Parquetはブラウザ内で実行する。
+- UIは質問、sample question、回答、生成SQL、結果tableで構成する。
+- SELECT/WITH限定、mart allowlist、1,000行上限、先頭50行表示とする。
+- 合成データであることと、生成SQL・解釈の確認が必要であることを明記する。
+
 ## 6. Next.js実装構成
 
 ```text
@@ -376,22 +386,27 @@ web/src/
 │   ├── architecture/page.tsx
 │   ├── data-pipeline/page.tsx
 │   ├── dashboards/page.tsx
+│   ├── ai-analyst/page.tsx
+│   ├── api/analyst/route.ts
 │   ├── contact/page.tsx
 │   ├── layout.tsx
 │   ├── globals.css
 │   ├── robots.ts
 │   └── sitemap.ts
 ├── components/
+│   ├── analyst/analyst-chat.tsx
 │   ├── dashboards/dashboard-selector.tsx
 │   ├── diagrams/architecture-frame.tsx
 │   ├── layout/
 │   ├── sections/
 │   └── ui/
-└── lib/site-data.ts
+└── lib/
+    ├── agent/
+    └── site-data.ts
 ```
 
 - Server Componentを基本とする。
-- `"use client"`はdashboard selectorへ限定する。
+- `"use client"`はdashboard selectorとanalyst chatへ限定する。
 - MDXは導入せず、事実データを`site-data.ts`へ型付きで集約する。
 - Tailwind v4は`globals.css`の`@theme inline`でtokenを定義する。
 - fontはnext/fontでCSS variableへ接続する。

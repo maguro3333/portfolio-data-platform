@@ -17,7 +17,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="メインナビゲーション">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label="メインナビゲーション">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -38,7 +38,7 @@ export function SiteHeader() {
           </a>
         </nav>
 
-        <details className="relative lg:hidden">
+        <details className="relative xl:hidden">
           <summary className="cursor-pointer list-none rounded-lg border border-border-strong px-4 py-2 text-sm font-semibold">
             Menu
           </summary>

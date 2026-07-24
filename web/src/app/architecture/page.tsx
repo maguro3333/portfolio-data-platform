@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArchitectureFrame, FlowNode } from "@/components/diagrams/architecture-frame";
 import { PageHero } from "@/components/sections/page-hero";
 import { Section, SectionHeading } from "@/components/layout/section";
@@ -127,7 +128,7 @@ export default function ArchitecturePage() {
 
           <ArchitectureFrame
             title="Portfolio website"
-            caption="BIの埋め込みURLは未確定。自然言語分析エージェントは後続実装です。"
+            caption="BIの埋め込みURLは未確定。AI AnalystはClaude APIのみを扱うサーバーrouteと、ブラウザ内DuckDB-WASMに責務を分離しています。"
           >
             <div className="grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
               <FlowNode label="Project docs" detail="facts / definitions" />
@@ -227,14 +228,20 @@ export default function ArchitecturePage() {
         <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-start">
           <div>
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-              Roadmap
+              AI consumer
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold">自然言語分析AIエージェント</h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-ink-muted">
-              公開用martsを対象に、自然言語からSQLを生成・実行する機能を後続で実装予定です。read-only、対象martのallowlist、row limit、実行SQL表示を前提とします。現時点では未実装です。
+              7つの公開用martを対象に、Anthropic tool useでDuckDB SQLを生成し、DuckDB-WASMで実行します。SELECT/WITH限定、対象martのallowlist、row limit、実行SQL表示を実装しています。
             </p>
+            <Link
+              href="/ai-analyst"
+              className="mt-4 inline-block text-sm font-semibold text-terracotta underline decoration-terracotta-soft decoration-4 underline-offset-4"
+            >
+              AI Analystを開く →
+            </Link>
           </div>
-          <Badge tone="amber">Not implemented</Badge>
+          <Badge tone="sage">Implemented</Badge>
         </div>
       </Section>
     </>

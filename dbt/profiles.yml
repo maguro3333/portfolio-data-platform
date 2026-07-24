@@ -1,0 +1,45 @@
+ec_portfolio:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: local.duckdb
+      schema: analytics
+      threads: 4
+
+    # BigQuery warehouse target. Auth via gcloud Application Default
+    # Credentials (method: oauth) — no key files committed. maximum_bytes_billed
+    # caps per-query scan as a hard cost guard.
+    bigquery:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('DBT_BIGQUERY_PROJECT', 'psyched-camp-502314-m3') }}"
+      dataset: ec_analytics
+      location: asia-northeast1
+      threads: 4
+      priority: interactive
+      maximum_bytes_billed: 2000000000  # 2 GB per-query cap
+      job_execution_timeout_seconds: 600
+      job_retries: 1
+    # Athena (S3 + Glue lakehouse) target. Credentials via ~/.aws (default
+    # profile). Table data written as Parquet under the data bucket; the
+    # workgroup enforces the results location and a per-query scan cutoff.
+    athena:
+      type: athena
+      region_name: ap-northeast-1
+      database: awsdatacatalog
+      schema: ec_mart
+      work_group: ec_portfolio
+      s3_staging_dir: s3://ec-portfolio-052223515273-athena-results/output/
+      s3_data_dir: s3://ec-portfolio-052223515273-data/
+      s3_data_naming: schema_table
+      threads: 4
+    # athena:
+    #   type: athena
+    #   database: awsdatacatalog
+    #   schema: analytics
+    #   region_name: ap-northeast-1
+    #   s3_staging_dir: "{{ env_var('DBT_ATHENA_STAGING_DIR') }}"
+    #   s3_data_dir: "{{ env_var('DBT_ATHENA_DATA_DIR') }}"
+    #   work_group: "{{ env_var('DBT_ATHENA_WORKGROUP') }}"
+    #   threads: 4

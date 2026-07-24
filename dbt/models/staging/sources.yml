@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Cloud targets resolve these names to ingested raw tables. DuckDB bypasses
+      source() and reads generator gzip CSV through the raw_relation macro.
+    # Cloud (bigquery) raw dataset. DuckDB ignores this and reads gzip CSV via
+    # the raw_relation macro, so this only affects warehouse targets.
+    schema: ec_raw
+    tables:
+      - name: dim_date
+      - name: dim_users
+      - name: dim_membership_rank_history
+      - name: bridge_user_identity
+      - name: dim_products
+      - name: dim_campaign
+      - name: dim_content
+      - name: fact_orders
+      - name: fact_order_items
+      - name: fact_events
+      - name: fact_sessions
+      - name: fact_campaign_cost_daily
+      - name: int_order_touchpoints

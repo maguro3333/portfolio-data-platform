@@ -1,0 +1,231 @@
+version: 1
+seed: 20240724
+scale: smoke
+timezone: Asia/Tokyo
+period:
+  start_date: "2024-01-01"
+  end_date: "2025-12-31"
+currency: JPY
+output:
+  root: data/raw
+  reports: data/reports
+  compression: gzip
+  overwrite: false
+  csv_float_format: "%.6f"
+  profile_chunk_rows: 100000
+  sample_rows: 20
+
+scales:
+  smoke:
+    users: 1000
+    pseudo_ids: 1300
+    products: 120
+    campaigns: 12
+    contents: 45
+    sessions: 5000
+    events: 30000
+    orders: 250
+    order_items: 413
+    purchase_sessions: 240
+  full:
+    users: 40000
+    pseudo_ids: 52000
+    products: 800
+    campaigns: 24
+    contents: 180
+    sessions: 220000
+    events: 1350000
+    orders: 10800
+    order_items: 17800
+    purchase_sessions: 10500
+
+users:
+  regions:
+    Kanto: 0.35
+    Kinki: 0.18
+    Chubu: 0.15
+    Kyushu: 0.10
+    Tohoku: 0.07
+    Chugoku: 0.06
+    Hokkaido: 0.05
+    Shikoku: 0.04
+  prefectures:
+    Kanto: [Tokyo, Kanagawa, Saitama, Chiba, Ibaraki, Tochigi, Gunma]
+    Kinki: [Osaka, Hyogo, Kyoto, Shiga, Nara, Wakayama]
+    Chubu: [Aichi, Shizuoka, Gifu, Mie, Nagano, Niigata, Toyama, Ishikawa, Fukui, Yamanashi]
+    Kyushu: [Fukuoka, Saga, Nagasaki, Kumamoto, Oita, Miyazaki, Kagoshima, Okinawa]
+    Tohoku: [Aomori, Iwate, Miyagi, Akita, Yamagata, Fukushima]
+    Chugoku: [Tottori, Shimane, Okayama, Hiroshima, Yamaguchi]
+    Hokkaido: [Hokkaido]
+    Shikoku: [Tokushima, Kagawa, Ehime, Kochi]
+  age_bands:
+    18-24: 0.10
+    25-34: 0.25
+    35-44: 0.25
+    45-54: 0.20
+    55-64: 0.13
+    65+: 0.07
+  genders:
+    female: 0.47
+    male: 0.47
+    non_binary: 0.01
+    unknown: 0.05
+  registration_channels:
+    organic_search: 0.35
+    paid_search: 0.25
+    organic_social: 0.15
+    email: 0.08
+    referral: 0.07
+    direct: 0.10
+  linked_pseudo_ratio: 0.865
+  extra_device_user_ratio: 0.125
+  login_delay_days_max: 60
+
+products:
+  categories:
+    Fashion: [Tops, Bottoms, Outerwear, Bags]
+    Beauty: [Skincare, Makeup, Haircare]
+    Home: [Kitchen, Storage, Bedding, Decor]
+    Electronics: [Audio, MobileAccessories, SmallAppliances]
+    Sports: [Fitness, Outdoor, Running]
+    Food: [Snacks, Beverages, Pantry]
+    Kids: [Clothing, Toys, Baby]
+    Books: [Business, Lifestyle, Fiction]
+  price_lognormal_mean: 8.45
+  price_lognormal_sigma: 0.70
+  min_price: 500
+  max_price: 80000
+  cost_ratio_min: 0.35
+  cost_ratio_max: 0.70
+  brands: 24
+  popularity_zipf_exponent: 1.12
+
+channels:
+  organic_search:
+    probability: 0.30
+    source: google
+    medium: organic
+    conversion_multiplier: 1.00
+  paid_search:
+    probability: 0.22
+    source: google
+    medium: cpc
+    conversion_multiplier: 1.20
+  direct:
+    probability: 0.18
+    source: "(direct)"
+    medium: "(none)"
+    conversion_multiplier: 1.30
+  organic_social:
+    probability: 0.10
+    source: social
+    medium: organic_social
+    conversion_multiplier: 0.75
+  paid_social:
+    probability: 0.08
+    source: social
+    medium: paid_social
+    conversion_multiplier: 0.70
+  email:
+    probability: 0.07
+    source: newsletter
+    medium: email
+    conversion_multiplier: 1.45
+  referral:
+    probability: 0.05
+    source: partner
+    medium: referral
+    conversion_multiplier: 0.90
+
+devices:
+  mobile: 0.68
+  desktop: 0.27
+  tablet: 0.05
+device_conversion_multiplier:
+  mobile: 0.85
+  desktop: 1.35
+  tablet: 0.95
+browsers:
+  mobile: {Chrome Mobile: 0.48, Mobile Safari: 0.44, Samsung Internet: 0.08}
+  desktop: {Chrome: 0.62, Safari: 0.22, Edge: 0.12, Firefox: 0.04}
+  tablet: {Mobile Safari: 0.66, Chrome Mobile: 0.34}
+operating_system:
+  mobile: {Android: 0.55, iOS: 0.45}
+  desktop: {Windows: 0.58, macOS: 0.39, Linux: 0.03}
+  tablet: {iPadOS: 0.66, Android: 0.34}
+
+seasonality:
+  weekend: 1.15
+  payday_days: [24, 25, 26]
+  payday: 1.08
+  periods:
+    - {name: Golden Week, start: "2024-04-29", end: "2024-05-06", traffic: 1.15, conversion: 1.08}
+    - {name: Summer Sale 2024, start: "2024-07-01", end: "2024-07-15", traffic: 1.35, conversion: 1.18}
+    - {name: Black Friday 2024, start: "2024-11-22", end: "2024-12-01", traffic: 1.80, conversion: 1.30}
+    - {name: Year End 2024, start: "2024-12-15", end: "2024-12-31", traffic: 1.45, conversion: 1.18}
+    - {name: Golden Week, start: "2025-04-29", end: "2025-05-06", traffic: 1.15, conversion: 1.08}
+    - {name: Summer Sale 2025, start: "2025-07-01", end: "2025-07-15", traffic: 1.35, conversion: 1.18}
+    - {name: Black Friday 2025, start: "2025-11-21", end: "2025-11-30", traffic: 1.80, conversion: 1.30}
+    - {name: Year End 2025, start: "2025-12-15", end: "2025-12-31", traffic: 1.45, conversion: 1.18}
+
+funnel:
+  view_item_sessions_ratio: 0.455
+  add_to_cart_sessions_ratio: 0.127
+  begin_checkout_sessions_ratio: 0.077
+  # purchase session count is defined per scale above.
+  engaged_session_ratio: 0.62
+  event_count_cap: 80
+  raw_duplicate_event_ratio: 0.0
+
+orders:
+  cancellation_ratio: 0.04
+  full_refund_ratio: 0.015
+  target_average_items: 1.65
+  line_count_probabilities: {"1": 0.58, "2": 0.28, "3": 0.10, "4": 0.04}
+  max_lines: 6
+  multi_quantity_probability: 0.12
+  coupon_probability: 0.22
+  discount_rates: [0.05, 0.10, 0.15, 0.20]
+  discount_rate_probabilities: [0.20, 0.50, 0.20, 0.10]
+  tax_rate: "0.10"
+  shipping_fee: "550.00"
+  free_shipping_threshold: "10000.00"
+  repeat_purchase_median_days: 60
+  order_statuses: [completed, cancelled, refunded]
+  recognized_revenue:
+    completed: item_net_sales
+    cancelled: zero
+    refunded: zero
+
+campaigns:
+  always_on_ratio: 0.33
+  paid_media: [cpc, paid_social]
+  search_ctr_range: [0.02, 0.06]
+  social_ctr_range: [0.005, 0.02]
+  cpc_lognormal_mean: 5.7
+  cpc_lognormal_sigma: 0.35
+  daily_budget_range: [3000, 30000]
+
+contents:
+  types: {blog: 0.55, sns: 0.30, lp: 0.15}
+  authors: 12
+  evergreen_ratio: 0.25
+  initial_decay_days: 7
+
+attribution:
+  lookback_days: 30
+  models: [last_non_direct, linear]
+  direct_source: "(direct)"
+  direct_medium: "(none)"
+  credit_scale: 6
+
+membership:
+  ranks: [bronze, silver, gold, platinum]
+  thresholds:
+    silver: {orders: 2, revenue: 15000}
+    gold: {orders: 4, revenue: 50000}
+    platinum: {orders: 8, revenue: 120000}
+
+privacy:
+  public_min_customers: 10
+  generate_direct_pii: false

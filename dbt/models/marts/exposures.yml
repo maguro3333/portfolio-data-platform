@@ -1,0 +1,36 @@
+version: 2
+
+exposures:
+  - name: looker_studio_portfolio
+    type: dashboard
+    maturity: medium
+    description: Looker Studio portfolio dashboard fed only from aggregated marts.
+    owner:
+      name: Portfolio Owner
+      email: portfolio@example.invalid
+    depends_on:
+      - ref('mart_kpi_daily')
+      - ref('mart_marketing_daily')
+      - ref('mart_content_performance')
+      - ref('mart_content_assists')
+      - ref('mart_funnel_daily')
+      - ref('mart_rfm_segment_daily')
+      - ref('mart_customer_cohort')
+
+  - name: tableau_public_portfolio
+    type: dashboard
+    maturity: medium
+    description: >
+      Tableau Public extract. Customer-grain mart_customer_rfm_snapshot is
+      deliberately excluded.
+    owner:
+      name: Portfolio Owner
+      email: portfolio@example.invalid
+    depends_on:
+      - ref('mart_kpi_daily')
+      - ref('mart_marketing_daily')
+      - ref('mart_content_performance')
+      - ref('mart_content_assists')
+      - ref('mart_funnel_daily')
+      - ref('mart_rfm_segment_daily')
+      - ref('mart_customer_cohort')

@@ -1,0 +1,114 @@
+version: 2
+
+models:
+  - name: mart_kpi_daily
+    description: Daily executive KPI by channel, device and customer type.
+    columns:
+      - name: metric_date
+        tests: [not_null]
+      - name: recognized_revenue
+        tests: [not_null]
+
+  - name: mart_marketing_daily
+    description: >
+      Daily acquisition funnel, attributed revenue and session-weight allocated
+      paid cost by campaign and device.
+    columns:
+      - name: metric_date
+        tests: [not_null]
+      - name: campaign_id
+        tests: [not_null]
+      - name: cost
+        tests: [not_null]
+
+  - name: mart_content_performance
+    description: Daily content engagement and same-session direct conversion.
+    columns:
+      - name: metric_date
+        tests: [not_null]
+      - name: content_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_content')
+                field: content_id
+
+  - name: mart_content_assists
+    description: Content assist value by purchase date and attribution model.
+    columns:
+      - name: purchase_date
+        tests: [not_null]
+      - name: attribution_model
+        tests:
+          - accepted_values:
+              arguments:
+                values: [last_non_direct, linear]
+      - name: lookback_days
+        tests: [not_null]
+
+  - name: mart_funnel_daily
+    description: Ordered four-step funnel with explicit numerator and denominator.
+    columns:
+      - name: metric_date
+        tests: [not_null]
+      - name: funnel_step
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false
+      - name: funnel_event_name
+        tests:
+          - accepted_values:
+              arguments:
+                values: [view_item, add_to_cart, begin_checkout, purchase]
+
+  - name: mart_customer_rfm_snapshot
+    description: Internal monthly customer-level RFM snapshot; never publish.
+    columns:
+      - name: snapshot_date
+        tests: [not_null]
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_users')
+                field: user_id
+      - name: r_score
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+      - name: f_score
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+      - name: m_score
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+  - name: mart_rfm_segment_daily
+    description: Public-safe RFM aggregate with groups below 10 suppressed.
+    columns:
+      - name: snapshot_date
+        tests: [not_null]
+      - name: customers
+        tests: [not_null]
+
+  - name: mart_customer_cohort
+    description: Monthly first-purchase cohort retention and cumulative value.
+    columns:
+      - name: cohort_month
+        tests: [not_null]
+      - name: months_since_first
+        tests: [not_null]
+      - name: cohort_customers
+        tests: [not_null]

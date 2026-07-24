@@ -1,0 +1,200 @@
+version: 2
+
+models:
+  - name: stg_dim_date
+    description: Typed calendar dimension.
+    columns:
+      - name: date_key
+        tests: [not_null, unique]
+      - name: calendar_date
+        tests: [not_null, unique]
+
+  - name: stg_dim_users
+    description: Typed current-state customer dimension without direct PII.
+    columns:
+      - name: user_id
+        tests: [not_null, unique]
+      - name: membership_rank_current
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [bronze, silver, gold, platinum]
+
+  - name: stg_dim_membership_rank_history
+    description: Half-open membership rank history.
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_users')
+                field: user_id
+      - name: membership_rank
+        tests:
+          - accepted_values:
+              arguments:
+                values: [bronze, silver, gold, platinum]
+      - name: valid_from
+        tests: [not_null]
+
+  - name: stg_bridge_user_identity
+    description: Effective-dated anonymous-to-member identity bridge.
+    columns:
+      - name: user_pseudo_id
+        tests: [not_null]
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_users')
+                field: user_id
+      - name: valid_from
+        tests: [not_null]
+
+  - name: stg_dim_products
+    description: Typed current-state product dimension.
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+      - name: list_price
+        tests: [not_null]
+      - name: standard_cost
+        tests: [not_null]
+
+  - name: stg_dim_campaign
+    description: Stable campaign master.
+    columns:
+      - name: campaign_id
+        tests: [not_null, unique]
+      - name: medium
+        tests:
+          - accepted_values:
+              arguments:
+                values: [cpc, paid_social]
+
+  - name: stg_dim_content
+    description: Content master used by performance and assist marts.
+    columns:
+      - name: content_id
+        tests: [not_null, unique]
+      - name: content_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: [blog, sns, lp]
+
+  - name: stg_fact_orders
+    description: One typed row per placed order.
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_users')
+                field: user_id
+      - name: session_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_fact_sessions')
+                field: session_id
+      - name: order_status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [completed, cancelled, refunded]
+      - name: currency
+        tests:
+          - accepted_values:
+              arguments:
+                values: [JPY]
+
+  - name: stg_fact_order_items
+    description: One typed row per order line.
+    columns:
+      - name: order_item_id
+        tests: [not_null, unique]
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_fact_orders')
+                field: order_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_products')
+                field: product_id
+
+  - name: stg_fact_events
+    description: Typed, flattened GA4-like events.
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: session_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_fact_sessions')
+                field: session_id
+      - name: event_name
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  [session_start, page_view, view_item, add_to_cart,
+                   begin_checkout, purchase]
+
+  - name: stg_fact_sessions
+    description: Typed session-level fact.
+    columns:
+      - name: session_id
+        tests: [not_null, unique]
+      - name: device_category
+        tests:
+          - accepted_values:
+              arguments:
+                values: [mobile, desktop, tablet]
+
+  - name: stg_fact_campaign_cost_daily
+    description: Daily paid campaign delivery and cost.
+    columns:
+      - name: cost_date
+        tests: [not_null]
+      - name: campaign_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dim_campaign')
+                field: campaign_id
+
+  - name: stg_generated_order_touchpoints
+    description: Generator-produced attribution result used only for reconciliation.
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_fact_orders')
+                field: order_id
+      - name: session_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_fact_sessions')
+                field: session_id

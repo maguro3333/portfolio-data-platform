@@ -1,0 +1,242 @@
+version: 1
+description: Core and intermediate logical schema shared by BigQuery and Athena.
+logical_types:
+  string: {bigquery: STRING, athena: STRING}
+  integer: {bigquery: INT64, athena: BIGINT}
+  money: {bigquery: NUMERIC, athena: "DECIMAL(18,2)"}
+  rate: {bigquery: NUMERIC, athena: "DECIMAL(18,6)"}
+  boolean: {bigquery: BOOL, athena: BOOLEAN}
+  date: {bigquery: DATE, athena: DATE}
+  timestamp: {bigquery: TIMESTAMP, athena: TIMESTAMP}
+tables:
+  dim_date:
+    primary_key: [date_key]
+    columns:
+      date_key: integer
+      calendar_date: date
+      calendar_year: integer
+      calendar_quarter: integer
+      calendar_month: integer
+      year_month: string
+      iso_week: integer
+      day_of_month: integer
+      day_of_week: integer
+      day_name: string
+      is_weekend: boolean
+      is_holiday: boolean
+      holiday_name: string
+      season: string
+      is_sale_period: boolean
+      sale_period_name: string
+  dim_users:
+    primary_key: [user_id]
+    columns:
+      user_sk: integer
+      user_id: string
+      registration_at: timestamp
+      registration_channel: string
+      acquisition_source: string
+      acquisition_medium: string
+      acquisition_campaign_id: string
+      country: string
+      region: string
+      prefecture: string
+      gender: string
+      age_band: string
+      membership_rank_current: string
+      first_order_at: timestamp
+      first_order_id: string
+      created_at: timestamp
+      updated_at: timestamp
+  dim_membership_rank_history:
+    primary_key: [user_id, valid_from]
+    columns:
+      user_id: string
+      membership_rank: string
+      valid_from: date
+      valid_to: date
+      is_current: boolean
+      created_at: timestamp
+  bridge_user_identity:
+    primary_key: [user_pseudo_id, user_id, valid_from]
+    columns:
+      user_pseudo_id: string
+      user_id: string
+      valid_from: timestamp
+      valid_to: timestamp
+      identity_source: string
+      is_current: boolean
+      created_at: timestamp
+  dim_products:
+    primary_key: [product_id]
+    columns:
+      product_sk: integer
+      product_id: string
+      product_name: string
+      brand: string
+      category_l1: string
+      category_l2: string
+      list_price: money
+      standard_cost: money
+      launch_date: date
+      is_active: boolean
+      created_at: timestamp
+      updated_at: timestamp
+  dim_campaign:
+    primary_key: [campaign_id]
+    columns:
+      campaign_id: string
+      campaign_name: string
+      platform: string
+      source: string
+      medium: string
+      campaign_type: string
+      start_date: date
+      end_date: date
+      is_paid: boolean
+      created_at: timestamp
+      updated_at: timestamp
+  dim_content:
+    primary_key: [content_id]
+    columns:
+      content_id: string
+      title: string
+      content_type: string
+      author: string
+      published_at: timestamp
+      content_group: string
+      target_category: string
+      page_path: string
+      is_active: boolean
+      created_at: timestamp
+      updated_at: timestamp
+  fact_orders:
+    primary_key: [order_id]
+    columns:
+      order_id: string
+      user_id: string
+      session_id: string
+      ordered_at: timestamp
+      order_date: date
+      order_status: string
+      currency: string
+      gross_sales: money
+      discount_amount: money
+      item_net_sales: money
+      tax_amount: money
+      shipping_amount: money
+      order_total: money
+      recognized_revenue: money
+      cost_of_goods: money
+      gross_profit: money
+      coupon_code: string
+      is_first_order: boolean
+      device_category: string
+      created_at: timestamp
+      updated_at: timestamp
+  fact_order_items:
+    primary_key: [order_item_id]
+    columns:
+      order_item_id: string
+      order_id: string
+      order_date: date
+      product_id: string
+      quantity: integer
+      unit_list_price: money
+      unit_selling_price: money
+      unit_cost: money
+      item_gross_sales: money
+      item_discount_amount: money
+      item_net_sales: money
+      item_cost: money
+      item_gross_profit: money
+      created_at: timestamp
+  fact_events:
+    primary_key: [event_id]
+    columns:
+      event_id: string
+      event_date: date
+      event_timestamp: timestamp
+      event_name: string
+      user_pseudo_id: string
+      user_id: string
+      session_id: string
+      event_sequence: integer
+      page_location: string
+      page_path: string
+      page_title: string
+      content_id: string
+      content_group: string
+      product_id: string
+      order_id: string
+      source: string
+      medium: string
+      campaign_id: string
+      device_category: string
+      browser: string
+      operating_system: string
+      country: string
+      region: string
+      engagement_time_msec: integer
+      is_engaged_session: boolean
+      is_conversion_event: boolean
+      created_at: timestamp
+  fact_sessions:
+    primary_key: [session_id]
+    columns:
+      session_id: string
+      session_date: date
+      user_pseudo_id: string
+      user_id: string
+      session_start_at: timestamp
+      session_end_at: timestamp
+      landing_page: string
+      landing_content_id: string
+      source: string
+      medium: string
+      campaign_id: string
+      device_category: string
+      browser: string
+      operating_system: string
+      country: string
+      region: string
+      event_count: integer
+      engagement_time_msec: integer
+      is_engaged_session: boolean
+      is_converted_session: boolean
+      order_count: integer
+      session_revenue: money
+      created_at: timestamp
+  fact_campaign_cost_daily:
+    primary_key: [cost_date, campaign_id]
+    columns:
+      cost_date: date
+      campaign_id: string
+      platform: string
+      source: string
+      medium: string
+      impressions: integer
+      clicks: integer
+      cost: money
+      currency: string
+      created_at: timestamp
+  int_order_touchpoints:
+    primary_key: [order_id, touchpoint_sequence]
+    columns:
+      order_id: string
+      order_date: date
+      touchpoint_timestamp: timestamp
+      session_id: string
+      touchpoint_sequence: integer
+      source: string
+      medium: string
+      campaign_id: string
+      content_id: string
+      days_before_purchase: integer
+      is_first_touch: boolean
+      is_last_touch: boolean
+      last_touch_credit: rate
+      linear_credit: rate
+      attributed_revenue_last_touch: money
+      attributed_revenue_linear: money
+      created_at: timestamp

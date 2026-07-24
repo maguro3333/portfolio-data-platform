@@ -1,0 +1,23 @@
+select
+  {{ string_cast('order_id') }} as order_id,
+  {{ string_cast('user_id') }} as user_id,
+  {{ nullable_string('session_id') }} as session_id,
+  {{ timestamp_cast('ordered_at') }} as ordered_at,
+  cast(order_date as date) as order_date,
+  lower({{ string_cast('order_status') }}) as order_status,
+  upper({{ string_cast('currency') }}) as currency,
+  {{ money_cast('gross_sales') }} as gross_sales,
+  {{ money_cast('discount_amount') }} as discount_amount,
+  {{ money_cast('item_net_sales') }} as item_net_sales,
+  {{ money_cast('tax_amount') }} as tax_amount,
+  {{ money_cast('shipping_amount') }} as shipping_amount,
+  {{ money_cast('order_total') }} as order_total,
+  {{ money_cast('recognized_revenue') }} as recognized_revenue,
+  {{ money_cast('cost_of_goods') }} as cost_of_goods,
+  {{ money_cast('gross_profit') }} as gross_profit,
+  {{ nullable_string('coupon_code') }} as coupon_code,
+  {{ bool_cast('is_first_order') }} as is_first_order,
+  lower({{ string_cast('device_category') }}) as device_category,
+  {{ timestamp_cast('created_at') }} as created_at,
+  {{ timestamp_cast('updated_at') }} as updated_at
+from {{ raw_relation('fact_orders') }}

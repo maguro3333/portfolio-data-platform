@@ -1,0 +1,43 @@
+name: ec_portfolio
+version: "1.0.0"
+config-version: 2
+
+profile: ec_portfolio
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  raw_data_path: "../data/raw"
+  attribution_lookback_days: 30
+  public_min_customers: 10
+  data_start_date: "2024-01-01"
+  data_end_date: "2025-12-31"
+
+models:
+  ec_portfolio:
+    +persist_docs:
+      relation: true
+      columns: true
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: table
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts
+      internal:
+        +schema: internal
+        +tags: ["internal", "contains_customer_grain"]
+      public:
+        +schema: public
+        +tags: ["public_safe"]
